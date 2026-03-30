@@ -688,8 +688,8 @@ document.getElementById('predictionForm').addEventListener('submit', async funct
     const result = await response.json();
     if (result.error) throw new Error(result.error);
 
-    const pct = result.risk_score_percent;
-    const level = result.risk_level;
+    const pct = (result.risk_probability * 100).toFixed(1);
+    const level = result.risk_label?.toLowerCase();
     const prob = result.probability;
 
     const config = {
@@ -697,7 +697,7 @@ document.getElementById('predictionForm').addEventListener('submit', async funct
       moderate: { icon: '⚠', label: 'Elevated Risk', desc: 'The model estimates a moderate probability of postpartum depression. Closer clinical monitoring and follow-up assessments are recommended.' },
       high:     { icon: '⚑', label: 'Higher Risk',   desc: 'The model estimates an elevated probability of postpartum depression. Comprehensive clinical evaluation and potential early intervention is recommended.' }
     };
-    const c = config[level];
+    const c = config[level] || config["moderate"];
 
     resultsDiv.style.display = 'block';
     resultsDiv.innerHTML = `

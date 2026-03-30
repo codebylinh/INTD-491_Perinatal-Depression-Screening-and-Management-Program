@@ -18,11 +18,19 @@ from flask import Flask, request, jsonify
 app = Flask(__name__)
 
 def run_prediction(data):
-    # move your existing prediction logic here
+    probability = 0.42
+
+    if probability < 0.10:
+        risk_level = "low"
+    elif probability < 0.30:
+        risk_level = "moderate"
+    else:
+        risk_level = "high"
+
     return {
-        "risk_probability": 0.42,
-        "risk_label": "Moderate",
-        "icon": "⚠️"
+        "probability": probability,
+        "risk_score_percent": round(probability * 100, 1),
+        "risk_level": risk_level
     }
 
 @app.route("/api/predict", methods=["GET", "POST"])
