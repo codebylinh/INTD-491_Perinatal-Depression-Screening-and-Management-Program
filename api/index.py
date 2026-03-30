@@ -13,6 +13,25 @@ Trained on N=691 samples, 3.2% positive rate (FPEPDS >= 13)
 from http.server import BaseHTTPRequestHandler
 import json
 import math
+from flask import Flask, request, jsonify
+
+app = Flask(__name__)
+
+def run_prediction(data):
+    # move your existing prediction logic here
+    return {
+        "risk_probability": 0.42,
+        "risk_label": "Moderate"
+    }
+
+@app.route("/api/predict", methods=["GET", "POST"])
+def predict():
+    if request.method == "GET":
+        return jsonify({"status": "ok"})
+
+    data = request.get_json(silent=True) or {}
+    result = run_prediction(data)
+    return jsonify(result)
 
 # ═══════════════════════════════════════════════════════════════
 # Trained Model Parameters (exported from sklearn pipeline)

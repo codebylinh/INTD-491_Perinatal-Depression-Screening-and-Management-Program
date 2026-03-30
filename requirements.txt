@@ -5,3 +5,4 @@
 # No external dependencies needed — the prediction API uses only
 # Python standard library (json, math, http.server)
 # The trained sklearn model parameters are embedded directly in the code.
+flask
