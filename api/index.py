@@ -17,29 +17,13 @@ from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
-def run_prediction(data):
-    probability = 0.42
-
-    if probability < 0.10:
-        risk_level = "low"
-    elif probability < 0.30:
-        risk_level = "moderate"
-    else:
-        risk_level = "high"
-
-    return {
-        "probability": probability,
-        "risk_score_percent": round(probability * 100, 1),
-        "risk_level": risk_level
-    }
-
 @app.route("/api/predict", methods=["GET", "POST"])
-def predict():
+def predict_route():
     if request.method == "GET":
         return jsonify({"status": "ok"})
 
     data = request.get_json(silent=True) or {}
-    result = run_prediction(data)
+    result = predict(data)
     return jsonify(result)
 
 # ═══════════════════════════════════════════════════════════════
