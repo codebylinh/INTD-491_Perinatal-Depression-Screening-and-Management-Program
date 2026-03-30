@@ -21,7 +21,8 @@ def run_prediction(data):
     # move your existing prediction logic here
     return {
         "risk_probability": 0.42,
-        "risk_label": "Moderate"
+        "risk_label": "Moderate",
+        "icon": "⚠️"
     }
 
 @app.route("/api/predict", methods=["GET", "POST"])
