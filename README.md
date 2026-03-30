@@ -2,7 +2,7 @@
 
 A cloud-deployed web application that predicts postpartum depression risk using a logistic regression model trained on first-trimester clinical data.
 
-**Live URL:** _(your Vercel URL will go here after deployment)_
+**Live URL:** https://intd-491-perinatal-depression-scree-phi.vercel.app/
 
 ---
 
