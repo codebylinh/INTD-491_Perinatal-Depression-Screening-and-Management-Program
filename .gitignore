@@ -1,0 +1,39 @@
+# Virtual environment
+venv/
+.venv/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env
+.env.local
+
+# Vercel
+.vercel/
+
+# Data files (do not commit sensitive data)
+*.sav
+*.csv
+*.xlsx
+data/
+
+# Model files (parameters are embedded in code)
+models/*.joblib
+models/*.pkl
+
+# Jupyter
+.ipynb_checkpoints/
