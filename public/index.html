@@ -497,14 +497,14 @@
             <ul style="margin-top: 0.3rem; margin-left: 1.5rem;">
               <li>Before feeding data to the model, we create compound scores by summing up ACE (Adverse Childhood Experiences) and SLE (Stressful Life Events) columns. It also calculates the mother's BMI.</li>
               <li>
-                <br><em>Regression:</em> Predicts the exact Postpartum EPDS score (continuous number) using an ElasticNet model. 
+                <em>Regression:</em> Predicts the exact Postpartum EPDS score (continuous number) using an ElasticNet model. 
                 <br><em>Classification:</em> Uses a threshold (FPEPDS &gt;= 13) to predict whether a mother is at "high risk" for postpartum depression (binary: 0 or 1) using a LogisticRegression model.</li>
             </ul>
           </li>
           <li><strong>Handling Class Imbalance</strong>
             <ul style="margin-top: 0.3rem; margin-left: 1.5rem;">
               <li>
-                <br><strong>Data Resampling:</strong> Uses RandomOverSampler on the training data to artificially duplicate the high-risk cases until the classes are equal, helping the model learn the patterns of the minority class better.</li>
+                <strong>Data Resampling:</strong> Uses RandomOverSampler on the training data to artificially duplicate the high-risk cases until the classes are equal, helping the model learn the patterns of the minority class better.</li>
             </ul>
           </li>
           <li><strong>Incremental Model Building (The F, F+S, and F+S+T Models)</strong>
@@ -526,10 +526,10 @@
     <h3 style="font-size: 1rem; font-weight: 600; margin-top: 1rem; margin-bottom: 0.3rem; color: var(--ink);">Domain Answers</h3>
     <ul style="font-size: 0.9rem; color: var(--ink-muted); margin-left: 1.5rem; margin-bottom: 1.25rem; line-height: 1.6;">
       <li>Early screening alone is inadequate, and that a longitudinal trajectory-based approach integrating psychosocial risk factors is necessary for early identification of high-risk individuals</li>
-      <li>ACE and SLE scores show only modest correlations, meaning they are not sufficient predictors on their own. Mental health risk is influenced by multiple factors, not just past trauma.</li>
+      <li>ACE and SLE scores show only modest correlations, meaning they are not sufficient predictors on their own. Mental health risk is influenced by multiple factors, not just past trauma</li>
       <li>Care shouldn’t stop after delivery; new mothers still need mental health support</li>
-      <li>Not all mothers follow the same pattern of risk development. Some women improve over time, but others get worse after giving birth.</li>
-      <li>The closer to delivery, the better we can identify who is at risk.</li>
+      <li>Not all mothers follow the same pattern of risk development. Some women improve over time, but others get worse after giving birth</li>
+      <li>The closer to delivery, the better we can identify who is at risk</li>
     </ul>
   </div>
 
