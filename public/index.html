@@ -1,204 +1,1114 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>PPD Risk Assessment</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Postpartum Depression Risk Assessment</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --bg: #faf8f5;
+      --surface: #ffffff;
+      --surface-soft: #f5f1ec;
+      --text: #1f1a17;
+      --muted: #6d6661;
+      --border: #e7dfd8;
+
+      --accent: #b5663f;
+      --accent-soft: #ead8cc;
+      --accent-glow: #f4e7de;
+
+      --green: #3d7d63;
+      --green-soft: #dceee5;
+
+      --amber: #c88f2a;
+      --amber-soft: #f7ecd0;
+
+      --red: #b64b45;
+      --red-soft: #f7dfdd;
+
+      --shadow: 0 4px 18px rgba(36, 25, 18, 0.05), 0 1px 3px rgba(36, 25, 18, 0.04);
+      --shadow-lg: 0 10px 35px rgba(36, 25, 18, 0.08);
+
+      --radius: 18px;
+      --radius-sm: 12px;
+      --maxw: 1120px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-      background: #f7f5f2;
       margin: 0;
-      padding: 2rem;
-      color: #2c2c2c;
+      font-family: "DM Sans", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image: radial-gradient(rgba(181,102,63,0.03) 1px, transparent 1px);
+      background-size: 20px 20px;
+      opacity: 0.35;
+      z-index: 0;
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
+    }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      backdrop-filter: blur(10px);
+      background: rgba(250,248,245,0.84);
+      border-bottom: 1px solid var(--border);
+      z-index: 10;
+    }
+
+    .header-inner {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+    }
+
+    .brand-badge {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: var(--accent);
+      display: grid;
+      place-items: center;
+      color: white;
+      flex-shrink: 0;
+      box-shadow: var(--shadow);
+    }
+
+    .brand-title {
+      font-family: "DM Serif Display", serif;
+      font-size: 1.1rem;
+      letter-spacing: -0.01em;
+    }
+
+    .brand-tag {
+      margin-left: auto;
+      padding: 0.3rem 0.7rem;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      background: var(--accent-glow);
+      border-radius: 999px;
     }
 
     .container {
-      max-width: 700px;
-      margin: auto;
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 2.25rem 1.5rem 4rem;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 1.5rem;
+      margin-bottom: 1.75rem;
+      align-items: stretch;
+    }
+
+    .hero-card,
+    .panel,
+    .metric-card,
+    .chart-card,
+    .result-card,
+    .info-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .hero-card {
+      padding: 2rem;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      margin-bottom: 0.9rem;
+      padding: 0.35rem 0.7rem;
+      border-radius: 999px;
+      background: var(--accent-glow);
+      color: var(--accent);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    h1, h2, h3 {
+      font-family: "DM Serif Display", serif;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      margin: 0;
     }
 
     h1 {
-      text-align: center;
-      margin-bottom: 2rem;
+      font-size: clamp(2rem, 4vw, 3.4rem);
+      margin-bottom: 0.9rem;
     }
 
-    button {
-      display: block;
-      margin: 2rem auto;
-      padding: 1rem 2rem;
-      font-size: 1rem;
-      border-radius: 999px;
+    .hero p,
+    .section-sub,
+    .muted {
+      color: var(--muted);
+    }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.8rem;
+      margin-top: 1.5rem;
+    }
+
+    .metric-card {
+      padding: 1rem;
+      border-radius: var(--radius-sm);
+      background: linear-gradient(180deg, #fff, #fcfaf8);
+    }
+
+    .metric-value {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 0.15rem;
+    }
+
+    .metric-label {
+      color: var(--muted);
+      font-size: 0.84rem;
+    }
+
+    .panel {
+      padding: 1.4rem;
+      background: linear-gradient(180deg, #fff, #fcfaf8);
+    }
+
+    .panel h3 {
+      font-size: 1.15rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .mini-list {
+      display: grid;
+      gap: 0.85rem;
+      margin-top: 1rem;
+    }
+
+    .mini-item {
+      display: flex;
+      gap: 0.8rem;
+      align-items: flex-start;
+      padding: 0.85rem;
+      border-radius: var(--radius-sm);
+      background: var(--surface-soft);
+    }
+
+    .mini-num {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: white;
+      color: var(--accent);
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .disclaimer {
+      margin: 1.25rem 0 2rem;
+      display: flex;
+      gap: 0.7rem;
+      align-items: flex-start;
+      padding: 1rem 1.1rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(200,143,42,0.22);
+      background: var(--amber-soft);
+      color: #6d5414;
+      font-size: 0.92rem;
+    }
+
+    .section {
+      margin-top: 2.25rem;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      align-items: end;
+      margin-bottom: 1rem;
+    }
+
+    .section-head h2 {
+      font-size: 1.8rem;
+    }
+
+    .form-shell {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 1.2rem;
+      align-items: start;
+    }
+
+    .form-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1.5rem;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem 1.1rem;
+    }
+
+    .field {
+      display: grid;
+      gap: 0.35rem;
+    }
+
+    .field label {
+      font-size: 0.77rem;
+      font-weight: 700;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .field input,
+    .field select {
+      width: 100%;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      background: #fdfbf9;
+      color: var(--text);
+      font: inherit;
+      padding: 0.82rem 0.95rem;
+      transition: 0.18s ease;
+    }
+
+    .field input:focus,
+    .field select:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px var(--accent-glow);
+      background: white;
+    }
+
+    .side-summary {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .summary-box {
+      padding: 1rem;
+      border-radius: var(--radius-sm);
+      background: var(--surface-soft);
+      border: 1px solid var(--border);
+    }
+
+    .summary-box h4 {
+      margin: 0 0 0.35rem;
+      font-size: 0.98rem;
+    }
+
+    .summary-box p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .btn-wrap {
+      margin-top: 1.2rem;
+      text-align: center;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
       border: none;
-      background: #a55c3b;
+      border-radius: 999px;
+      padding: 1rem 2.3rem;
+      background: linear-gradient(135deg, #b5663f, #c07b52);
       color: white;
+      font: inherit;
+      font-weight: 700;
+      font-size: 1rem;
       cursor: pointer;
+      box-shadow: 0 10px 26px rgba(181,102,63,0.2);
+      transition: transform 0.16s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 14px 28px rgba(181,102,63,0.28);
+    }
+
+    .btn:disabled {
+      cursor: wait;
+      opacity: 0.8;
+      transform: none;
+    }
+
+    .spinner {
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255,255,255,0.35);
+      border-top-color: white;
+      border-radius: 50%;
+      display: inline-block;
+      animation: spin 0.65s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    #results {
+      display: none;
+      margin-top: 1.3rem;
     }
 
     .result-card {
-      background: white;
-      border-radius: 16px;
-      padding: 1.5rem;
-      margin-top: 2rem;
+      padding: 2rem;
       text-align: center;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+      opacity: 0;
+      transform: translateY(18px);
+      animation: fadeUp 0.55s ease forwards;
+      overflow: hidden;
+    }
+
+    .result-card.low { border-top: 5px solid var(--green); }
+    .result-card.moderate { border-top: 5px solid var(--amber); }
+    .result-card.high { border-top: 5px solid var(--red); }
+
+    @keyframes fadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .result-icon {
-      font-size: 2rem;
+      width: 68px;
+      height: 68px;
+      border-radius: 50%;
+      margin: 0 auto 1rem;
+      display: grid;
+      place-items: center;
+      font-size: 1.6rem;
+      font-weight: 700;
     }
+
+    .result-card.low .result-icon { background: var(--green-soft); color: var(--green); }
+    .result-card.moderate .result-icon { background: var(--amber-soft); color: var(--amber); }
+    .result-card.high .result-icon { background: var(--red-soft); color: var(--red); }
 
     .result-label {
-      font-weight: bold;
-      margin-top: 0.5rem;
-      letter-spacing: 1px;
+      font-size: 0.76rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-weight: 700;
+      margin-bottom: 0.45rem;
     }
 
+    .result-card.low .result-label { color: var(--green); }
+    .result-card.moderate .result-label { color: var(--amber); }
+    .result-card.high .result-label { color: var(--red); }
+
     .result-title {
-      font-size: 1.4rem;
-      margin: 1rem 0;
+      font-size: 2.2rem;
+      margin-bottom: 0.85rem;
     }
 
     .result-prob {
-      font-size: 3rem;
-      font-weight: bold;
-      margin: 0.5rem 0;
+      font-size: 4rem;
+      line-height: 1;
+      font-weight: 700;
+      margin: 0.3rem 0 1rem;
     }
 
-    .prob-bar-bg {
-      background: #eee;
-      height: 10px;
+    .result-card.low .result-prob { color: var(--green); }
+    .result-card.moderate .result-prob { color: var(--amber); }
+    .result-card.high .result-prob { color: var(--red); }
+
+    .prob-wrap {
+      max-width: 460px;
+      margin: 0.8rem auto 1rem;
+    }
+
+    .prob-bg {
+      height: 14px;
+      background: #eee7e1;
       border-radius: 999px;
       overflow: hidden;
-      margin: 1rem 0;
     }
 
-    .prob-bar-fill {
+    .prob-fill {
       height: 100%;
-      background: #a55c3b;
       width: 0%;
-      transition: width 0.6s ease;
+      border-radius: inherit;
+      transition: width 0.95s cubic-bezier(.22,1,.36,1);
     }
+
+    .result-card.low .prob-fill { background: var(--green); }
+    .result-card.moderate .prob-fill { background: var(--amber); }
+    .result-card.high .prob-fill { background: var(--red); }
 
     .prob-scale {
       display: flex;
       justify-content: space-between;
-      font-size: 0.8rem;
-      color: #777;
+      color: #90867f;
+      font-size: 0.78rem;
+      margin-top: 0.35rem;
     }
 
     .result-desc {
-      margin: 1rem 0;
-      font-size: 0.95rem;
+      max-width: 640px;
+      margin: 1rem auto 1rem;
+      color: var(--muted);
+      font-size: 1rem;
     }
 
-    .result-disclaimer {
-      margin-top: 1rem;
-      font-size: 0.8rem;
-      color: #666;
-      background: #f2f2f2;
-      padding: 0.8rem;
-      border-radius: 10px;
+    .result-note {
+      max-width: 760px;
+      margin: 1rem auto 0;
+      background: var(--surface-soft);
+      border-radius: 14px;
+      padding: 0.95rem 1rem;
+      color: var(--muted);
+      font-size: 0.88rem;
+      text-align: left;
     }
 
-    .error {
-      margin-top: 1rem;
+    .error-msg {
+      background: var(--red-soft);
+      color: var(--red);
+      border: 1px solid rgba(182,75,69,0.2);
+      border-radius: 14px;
       padding: 1rem;
-      background: #ffe6e6;
-      color: #a94442;
+      margin-top: 1rem;
+    }
+
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 1rem;
+    }
+
+    .span-4 { grid-column: span 4; }
+    .span-6 { grid-column: span 6; }
+    .span-8 { grid-column: span 8; }
+    .span-12 { grid-column: span 12; }
+
+    .chart-card,
+    .info-card {
+      padding: 1.2rem;
+      min-height: 240px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .chart-card h3,
+    .info-card h3 {
+      font-size: 1.1rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .card-sub {
+      font-size: 0.88rem;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+
+    .bar-chart,
+    .scatter-chart,
+    .line-chart,
+    .timeline-chart,
+    .heat-grid,
+    .flow-chart,
+    .radial-wrap {
+      height: 170px;
+      display: flex;
+      align-items: end;
+      justify-content: center;
+    }
+
+    .bar-chart {
+      gap: 12px;
+      align-items: end;
+      padding: 0 0.5rem;
+    }
+
+    .bar {
+      width: 42px;
+      border-radius: 12px 12px 0 0;
+      background: linear-gradient(180deg, #cb8d6b, #b5663f);
+      opacity: 0.92;
+    }
+
+    .bar:nth-child(1){ height: 48px; }
+    .bar:nth-child(2){ height: 84px; }
+    .bar:nth-child(3){ height: 62px; }
+    .bar:nth-child(4){ height: 124px; }
+    .bar:nth-child(5){ height: 96px; }
+
+    .line-chart svg,
+    .scatter-chart svg,
+    .timeline-chart svg,
+    .flow-chart svg,
+    .radial-wrap svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .heat-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      grid-template-rows: repeat(4, 1fr);
+      gap: 10px;
+      padding: 0.5rem;
+    }
+
+    .cell {
       border-radius: 10px;
-      text-align: center;
+      background: #ecd8cf;
+    }
+
+    .cell.d1 { background: #f1e4dd; }
+    .cell.d2 { background: #e6c6b7; }
+    .cell.d3 { background: #d9927d; }
+    .cell.d4 { background: #c96b56; }
+    .cell.d5 { background: #a94d3f; }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+
+    .info-card p,
+    .info-card li {
+      color: var(--muted);
+      font-size: 0.94rem;
+    }
+
+    .info-card ul {
+      margin: 0.6rem 0 0;
+      padding-left: 1rem;
+    }
+
+    .site-footer {
+      max-width: var(--maxw);
+      margin: 3rem auto 0;
+      padding: 1.5rem;
+      color: #8e857f;
+      border-top: 1px solid var(--border);
+      font-size: 0.85rem;
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 980px) {
+      .hero,
+      .form-shell,
+      .about-grid {
+        grid-template-columns: 1fr;
+      }
+      .portfolio-grid {
+        grid-template-columns: 1fr;
+      }
+      .span-4, .span-6, .span-8, .span-12 { grid-column: auto; }
+    }
+
+    @media (max-width: 720px) {
+      .hero-stats,
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+      .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+      .result-title {
+        font-size: 1.7rem;
+      }
+      .result-prob {
+        font-size: 3rem;
+      }
     }
   </style>
 </head>
-
 <body>
-  <div class="container">
-    <h1>Postpartum Depression Risk Assessment</h1>
+<div class="page">
 
-    <button onclick="runPrediction()">Run Risk Assessment</button>
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand-badge">❤</div>
+      <div class="brand-title">PND Risk Screener</div>
+      <div class="brand-tag">Research Tool</div>
+    </div>
+  </header>
 
-    <div id="errorBox" class="error" style="display:none;"></div>
-    <div id="results"></div>
-  </div>
+  <main class="container">
 
-  <script>
-    async function runPrediction() {
-      const resultsDiv = document.getElementById("results");
-      const errorBox = document.getElementById("errorBox");
+    <section class="hero">
+      <div class="hero-card">
+        <div class="eyebrow">Clinical ML Case Study</div>
+        <h1>Postpartum Depression Risk Assessment</h1>
+        <p>
+          A deployed screening interface for estimating postpartum depression risk from first-trimester features,
+          psychosocial history, and clinical indicators. This project combines machine learning, interface design,
+          and deployment into a research-oriented web application.
+        </p>
 
-      errorBox.style.display = "none";
-      resultsDiv.innerHTML = "";
+        <div class="hero-stats">
+          <div class="metric-card">
+            <div class="metric-value">691</div>
+            <div class="metric-label">cohort participants</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-value">18</div>
+            <div class="metric-label">input features</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-value">10%</div>
+            <div class="metric-label">screening threshold</div>
+          </div>
+        </div>
+      </div>
 
-      try {
-        const response = await fetch("/api/predict", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({})
-        });
+      <div class="panel">
+        <h3>Project framing</h3>
+        <p class="muted">
+          This site is designed as both a usable screening interface and a portfolio-style project presentation.
+        </p>
+        <div class="mini-list">
+          <div class="mini-item">
+            <div class="mini-num">1</div>
+            <div>
+              <strong>Input collection</strong><br>
+              demographic, behavioral, clinical, ACE, and stressful life event features
+            </div>
+          </div>
+          <div class="mini-item">
+            <div class="mini-num">2</div>
+            <div>
+              <strong>Model inference</strong><br>
+              logistic regression deployed through a Python API
+            </div>
+          </div>
+          <div class="mini-item">
+            <div class="mini-num">3</div>
+            <div>
+              <strong>Explainable output</strong><br>
+              probability, risk category, and supporting research visuals
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-        const result = await response.json();
+    <div class="disclaimer">
+      <div>⚠</div>
+      <div>
+        <strong>Research use only.</strong> This interface is a screening-oriented demonstration and not a clinical diagnostic tool.
+        Any interpretation should be followed by appropriate professional evaluation.
+      </div>
+    </div>
 
-        const pct = ((result.risk_probability ?? 0) * 100).toFixed(1);
-        const level = result.risk_label?.toLowerCase() || "moderate";
-        const prob = result.risk_probability ?? 0;
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>Interactive screening</h2>
+          <div class="section-sub">A cleaner, softer clinical form with results integrated into the same page.</div>
+        </div>
+      </div>
 
-        const config = {
-          low: {
-            icon: "✓",
-            label: "Lower Risk",
-            desc: "This screening suggests a lower level of risk at this time."
-          },
-          moderate: {
-            icon: "⚠",
-            label: "Elevated Risk",
-            desc: "This screening suggests elevated risk. Follow-up with a healthcare professional is recommended."
-          },
-          high: {
-            icon: "⚑",
-            label: "Higher Risk",
-            desc: "This screening suggests higher risk. Please seek follow-up with a healthcare professional."
-          }
-        };
-
-        const c = config[level] || config.moderate;
-
-        resultsDiv.innerHTML = `
-          <div class="result-card ${level}">
-            <div class="result-icon">${c.icon}</div>
-            <div class="result-label">${c.label}</div>
-            <div class="result-title">Risk Assessment Result</div>
-            <div class="result-prob">${pct}%</div>
-
-            <div class="prob-bar-bg">
-              <div class="prob-bar-fill"></div>
+      <div class="form-shell">
+        <div class="form-card">
+          <form id="predictionForm">
+            <div class="form-grid">
+              <div class="field">
+                <label for="age">Age</label>
+                <input id="age" type="number" placeholder="e.g. 28">
+              </div>
+              <div class="field">
+                <label for="gestweek">Gestational week</label>
+                <input id="gestweek" type="number" placeholder="e.g. 10">
+              </div>
+              <div class="field">
+                <label for="fepds">EPDS</label>
+                <input id="fepds" type="number" placeholder="0–30">
+              </div>
+              <div class="field">
+                <label for="fgad7">GAD-7</label>
+                <input id="fgad7" type="number" placeholder="0–21">
+              </div>
+              <div class="field">
+                <label for="weight">Pre-pregnancy weight (kg)</label>
+                <input id="weight" type="number" placeholder="e.g. 58">
+              </div>
+              <div class="field">
+                <label for="height">Height (cm)</label>
+                <input id="height" type="number" placeholder="e.g. 162">
+              </div>
             </div>
 
+            <div class="btn-wrap">
+              <button class="btn" id="submitBtn" type="submit">
+                <span id="btnIcon">⟳</span>
+                <span id="btnText">Run Risk Assessment</span>
+              </button>
+            </div>
+          </form>
+
+          <div id="results"></div>
+          <div id="errorBox" style="display:none;"></div>
+        </div>
+
+        <div class="side-summary">
+          <div class="summary-box">
+            <h4>What this form captures</h4>
+            <p>
+              The screening combines early symptom burden, anxiety indicators, body metrics,
+              and psychosocial stressors into a single probability estimate.
+            </p>
+          </div>
+          <div class="summary-box">
+            <h4>Why this matters</h4>
+            <p>
+              A low threshold is used here as a screening choice to prioritize sensitivity,
+              making the tool more suitable for early follow-up discussion.
+            </p>
+          </div>
+          <div class="summary-box">
+            <h4>What the result means</h4>
+            <p>
+              The output is best interpreted as a probability-based risk signal, not a diagnosis.
+              It should support referral and follow-up decisions rather than replace clinical judgment.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>Research visuals</h2>
+          <div class="section-sub">Relevant chart styles adapted from your reference: bar, line, area, scatter, radial, heatmap, timeline, and flow.</div>
+        </div>
+      </div>
+
+      <div class="portfolio-grid">
+        <div class="chart-card span-4">
+          <h3>Feature importance</h3>
+          <div class="card-sub">Bar chart for the strongest predictors</div>
+          <div class="bar-chart">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+          </div>
+        </div>
+
+        <div class="chart-card span-4">
+          <h3>Threshold view</h3>
+          <div class="card-sub">Area/line chart showing screening sensitivity logic</div>
+          <div class="line-chart">
+            <svg viewBox="0 0 320 170">
+              <defs>
+                <linearGradient id="areaGrad" x1="0" x2="0" y1="0" y2="1">
+                  <stop offset="0%" stop-color="#d2826d" stop-opacity="0.45"/>
+                  <stop offset="100%" stop-color="#d2826d" stop-opacity="0.03"/>
+                </linearGradient>
+              </defs>
+              <line x1="20" y1="145" x2="300" y2="145" stroke="#d9cec5" stroke-width="2"/>
+              <line x1="20" y1="20" x2="20" y2="145" stroke="#d9cec5" stroke-width="2"/>
+              <path d="M20 125 C70 105, 95 95, 130 82 S210 65, 300 38 L300 145 L20 145 Z"
+                    fill="url(#areaGrad)"/>
+              <path d="M20 125 C70 105, 95 95, 130 82 S210 65, 300 38"
+                    fill="none" stroke="#b5663f" stroke-width="4" stroke-linecap="round"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="chart-card span-4">
+          <h3>Risk summary</h3>
+          <div class="card-sub">Radial/fan-style clinical summary chart</div>
+          <div class="radial-wrap">
+            <svg viewBox="0 0 220 170">
+              <circle cx="110" cy="100" r="56" fill="#f3e3db"/>
+              <circle cx="110" cy="100" r="44" fill="#ead0c4"/>
+              <circle cx="110" cy="100" r="32" fill="#d99782"/>
+              <circle cx="110" cy="100" r="18" fill="#b5663f"/>
+              <path d="M110 100 L110 26 A74 74 0 0 1 173 60 Z" fill="#a84f39" opacity="0.9"/>
+              <path d="M110 100 L173 60 A74 74 0 0 1 184 120 Z" fill="#d18f76" opacity="0.9"/>
+            </svg>
+          </div>
+        </div>
+
+        <div class="chart-card span-6">
+          <h3>Symptom relationship</h3>
+          <div class="card-sub">Scatter plot for early symptom/anxiety interaction</div>
+          <div class="scatter-chart">
+            <svg viewBox="0 0 420 180">
+              <line x1="32" y1="150" x2="390" y2="150" stroke="#d9cec5" stroke-width="2"/>
+              <line x1="32" y1="22" x2="32" y2="150" stroke="#d9cec5" stroke-width="2"/>
+              <g fill="#b5663f" opacity="0.9">
+                <circle cx="72" cy="132" r="6"/>
+                <circle cx="108" cy="115" r="6"/>
+                <circle cx="142" cy="108" r="6"/>
+                <circle cx="168" cy="95" r="7"/>
+                <circle cx="225" cy="87" r="7"/>
+                <circle cx="248" cy="78" r="8"/>
+                <circle cx="282" cy="62" r="7"/>
+                <circle cx="325" cy="54" r="9"/>
+              </g>
+            </svg>
+          </div>
+        </div>
+
+        <div class="chart-card span-6">
+          <h3>Factor intensity map</h3>
+          <div class="card-sub">Grid/heatmap view across grouped risk domains</div>
+          <div class="heat-grid">
+            <div class="cell d1"></div><div class="cell d2"></div><div class="cell d3"></div><div class="cell d2"></div><div class="cell d4"></div>
+            <div class="cell d2"></div><div class="cell d4"></div><div class="cell d1"></div><div class="cell d3"></div><div class="cell d2"></div>
+            <div class="cell d1"></div><div class="cell d2"></div><div class="cell d5"></div><div class="cell d3"></div><div class="cell d1"></div>
+            <div class="cell d3"></div><div class="cell d2"></div><div class="cell d1"></div><div class="cell d4"></div><div class="cell d2"></div>
+          </div>
+        </div>
+
+        <div class="chart-card span-6">
+          <h3>Workflow timeline</h3>
+          <div class="card-sub">Timeline chart for the user journey</div>
+          <div class="timeline-chart">
+            <svg viewBox="0 0 420 170">
+              <path d="M40 85 H380" stroke="#cebfb4" stroke-width="6" stroke-linecap="round"/>
+              <g fill="#b5663f">
+                <circle cx="60" cy="85" r="11"/>
+                <circle cx="145" cy="85" r="11"/>
+                <circle cx="230" cy="85" r="11"/>
+                <circle cx="315" cy="85" r="11"/>
+              </g>
+              <g fill="#8d7b72" font-size="12" font-family="DM Sans, sans-serif">
+                <text x="38" y="118">Input</text>
+                <text x="124" y="118">Scoring</text>
+                <text x="210" y="118">Inference</text>
+                <text x="292" y="118">Result</text>
+              </g>
+            </svg>
+          </div>
+        </div>
+
+        <div class="chart-card span-6">
+          <h3>Model pipeline</h3>
+          <div class="card-sub">Sankey-like flow from features to deployed output</div>
+          <div class="flow-chart">
+            <svg viewBox="0 0 420 170">
+              <rect x="18" y="42" width="66" height="80" rx="14" fill="#edd6ca"/>
+              <rect x="176" y="52" width="72" height="60" rx="14" fill="#d4957e"/>
+              <rect x="330" y="42" width="66" height="80" rx="14" fill="#b5663f"/>
+              <path d="M84 60 C120 60, 138 68, 176 74" stroke="#d7a593" stroke-width="16" fill="none" stroke-linecap="round" opacity="0.95"/>
+              <path d="M84 86 C120 86, 138 82, 176 82" stroke="#cc876e" stroke-width="14" fill="none" stroke-linecap="round" opacity="0.95"/>
+              <path d="M84 108 C120 108, 138 96, 176 90" stroke="#e4b8a7" stroke-width="12" fill="none" stroke-linecap="round" opacity="0.95"/>
+              <path d="M248 82 C286 82, 300 82, 330 82" stroke="#b5663f" stroke-width="20" fill="none" stroke-linecap="round"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>About the model</h2>
+          <div class="section-sub">Portfolio-level framing so the site reads like a complete project, not only a form.</div>
+        </div>
+      </div>
+
+      <div class="about-grid">
+        <div class="info-card">
+          <h3>What the model does</h3>
+          <p>
+            This classifier estimates the probability of postpartum depression risk using first-trimester demographic,
+            clinical, and psychosocial features. It is designed for screening-oriented use rather than definitive diagnosis.
+          </p>
+        </div>
+
+        <div class="info-card">
+          <h3>How it works</h3>
+          <p>
+            Inputs are preprocessed and mapped into a logistic regression pipeline. The model then outputs a probability,
+            which is compared against a low threshold to support sensitivity-oriented early screening.
+          </p>
+        </div>
+
+        <div class="info-card">
+          <h3>Why this site matters</h3>
+          <p>
+            The project demonstrates end-to-end work: machine learning, deployment, UI design, model communication,
+            and research-oriented content design in a single interface.
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div>INTD 491 · Postpartum Depression Prediction Project</div>
+    <div>Logistic Regression · Python API · Research-Oriented Interface Design</div>
+  </footer>
+
+</div>
+
+<script>
+  const form = document.getElementById('predictionForm');
+  const btn = document.getElementById('submitBtn');
+  const btnText = document.getElementById('btnText');
+  const btnIcon = document.getElementById('btnIcon');
+  const resultsDiv = document.getElementById('results');
+  const errorBox = document.getElementById('errorBox');
+
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    errorBox.style.display = 'none';
+    errorBox.className = 'error-msg';
+    errorBox.textContent = '';
+
+    btn.disabled = true;
+    btnIcon.innerHTML = '<span class="spinner"></span>';
+    btnText.textContent = 'Predicting...';
+
+    const weight = parseFloat(document.getElementById('weight').value);
+    const height = parseFloat(document.getElementById('height').value);
+    const bmi = (weight && height) ? weight / ((height / 100) ** 2) : null;
+
+    const payload = {
+      Age: parseFloat(document.getElementById('age').value) || null,
+      F_Gestational_Week: parseFloat(document.getElementById('gestweek').value) || null,
+      FEPDS: parseFloat(document.getElementById('fepds').value) || null,
+      FGAD7: parseFloat(document.getElementById('fgad7').value) || null,
+      BMI: bmi,
+      ACE_Score: 1,
+      SLE_Score: 3
+    };
+
+    try {
+      const response = await fetch('/api/predict', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) {
+        throw new Error(`Server error: ${response.status}`);
+      }
+
+      const result = await response.json();
+
+      if (result.error) {
+        throw new Error(result.error);
+      }
+
+      const pct = ((result.risk_probability ?? 0) * 100).toFixed(1);
+      const prob = result.risk_probability ?? 0;
+      const level = result.risk_label?.toLowerCase() || 'moderate';
+
+      const config = {
+        low: {
+          icon: '✓',
+          label: 'Lower Risk',
+          desc: 'This screening suggests a lower level of risk at this time. Routine follow-up and continued observation are appropriate.'
+        },
+        moderate: {
+          icon: '⚠',
+          label: 'Elevated Risk',
+          desc: 'This screening suggests elevated risk. Follow-up with a healthcare professional is recommended to review symptoms and next steps.'
+        },
+        high: {
+          icon: '⚑',
+          label: 'Higher Risk',
+          desc: 'This screening suggests higher risk. Prompt follow-up with a healthcare professional is recommended for further assessment.'
+        }
+      };
+
+      const c = config[level] || config.moderate;
+
+      resultsDiv.style.display = 'block';
+      resultsDiv.innerHTML = `
+        <div class="result-card ${level}">
+          <div class="result-icon">${c.icon}</div>
+          <div class="result-label">${c.label}</div>
+          <div class="result-title">Risk Assessment Result</div>
+          <div class="result-prob">${pct}%</div>
+
+          <div class="prob-wrap">
+            <div class="prob-bg">
+              <div class="prob-fill"></div>
+            </div>
             <div class="prob-scale">
               <span>0%</span>
               <span>Threshold: 10%</span>
               <span>100%</span>
             </div>
-
-            <p class="result-desc">${c.desc}</p>
-
-            <div class="result-disclaimer">
-              <strong>Important:</strong> This is a screening estimate, not a diagnosis. Please consult a healthcare professional.
-            </div>
           </div>
-        `;
 
-        requestAnimationFrame(() => {
-          const bar = document.querySelector(".prob-bar-fill");
-          if (bar) bar.style.width = `${prob * 100}%`;
-        });
+          <p class="result-desc">${c.desc}</p>
 
-      } catch (err) {
-        errorBox.innerText = "Prediction failed. Please try again.";
-        errorBox.style.display = "block";
-      }
+          <div class="result-note">
+            <strong>Important:</strong> This result is a screening estimate, not a diagnosis.
+            Please consult a qualified healthcare professional for interpretation and follow-up.
+          </div>
+        </div>
+      `;
+
+      requestAnimationFrame(() => {
+        const fill = resultsDiv.querySelector('.prob-fill');
+        if (fill) {
+          fill.style.width = `${Math.max(0, Math.min(prob * 100, 100))}%`;
+        }
+      });
+
+      resultsDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    } catch (err) {
+      errorBox.style.display = 'block';
+      errorBox.textContent = `Prediction failed: ${err.message}`;
+    } finally {
+      btn.disabled = false;
+      btnIcon.textContent = '⟳';
+      btnText.textContent = 'Run Risk Assessment';
     }
-  </script>
+  });
+</script>
 </body>
 </html>
