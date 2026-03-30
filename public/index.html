@@ -473,6 +473,9 @@
 
     <h3 style="font-size: 1rem; font-weight: 600; margin-top: 1rem; margin-bottom: 0.3rem; color: var(--ink);">Predictive Analysis</h3>
     <p style="font-size: 0.9rem; color: var(--ink-muted);"><em>Content to be added...</em></p>
+
+    <h3 style="font-size: 1rem; font-weight: 600; margin-top: 1rem; margin-bottom: 0.3rem; color: var(--ink);">Domain answers</h3>
+    <p style="font-size: 0.9rem; color: var(--ink-muted);"><em>Content to be added...</em></p>
   </div>
 
   <form id="predictionForm" autocomplete="off">
@@ -735,8 +738,8 @@ document.getElementById('predictionForm').addEventListener('submit', async funct
     const result = await response.json();
     if (result.error) throw new Error(result.error);
 
-    const pct = (result.risk_probability * 100).toFixed(1);
-    const level = result.risk_label?.toLowerCase();
+    const pct = result.risk_score_percent;
+    const level = result.risk_level?.toLowerCase();
     const prob = result.probability;
 
     const config = {
