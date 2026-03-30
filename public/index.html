@@ -435,9 +435,20 @@
 
     <!-- Interactive Data Visualizations -->
     <div id="plotly-epds-means" style="width:100%; height:320px; margin-top: 1.5rem; margin-bottom: 1.5rem;"></div>
+    
     <div class="field-grid" style="margin-bottom: 1.5rem;">
       <div id="plotly-epds-risk" style="width:100%; height:300px;"></div>
       <div id="plotly-residence" style="width:100%; height:300px;"></div>
+    </div>
+    
+    <div class="field-grid" style="margin-bottom: 1.5rem;">
+      <div id="plotly-income" style="width:100%; height:300px;"></div>
+      <div id="plotly-unplanned" style="width:100%; height:300px;"></div>
+    </div>
+
+    <div class="field-grid" style="margin-bottom: 1.5rem;">
+      <div id="plotly-children" style="width:100%; height:300px;"></div>
+      <div id="plotly-correlation" style="width:100%; height:300px;"></div>
     </div>
 
     <h3 style="font-size: 1rem; font-weight: 600; margin-top: 1rem; margin-bottom: 0.3rem; color: var(--ink);">Descriptive Analysis</h3>
@@ -792,7 +803,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // 1. Mean EPDS Trajectory
   const epdsMeansData = [{
     x: ['1st Trimester', '2nd Trimester', '3rd Trimester', 'Postpartum'],
-    y: [5.72, 4.85, 4.45, 4.38], // Estimated intermediate milestones based on info
+    y: [5.72, 4.15, 4.1, 4.38],
     type: 'scatter',
     mode: 'lines+markers',
     marker: { color: '#B25830', size: 10 },
@@ -808,8 +819,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // 2. High Risk Prevalence
   const epdsRiskData = [{
-    x: ['1st Trim', '2nd Trim', '3rd Trim', 'Postpartum'],
-    y: [4.0, 1.5, 0.9, 3.2], // Estimated 2nd trimester to show dip
+    x: ['1st Trimester', '2nd Trimester', '3rd Trimester', 'Postpartum'],
+    y: [4.0, 1.5, 0.9, 3.2],
     type: 'bar',
     marker: { color: '#2E7D5B' }
   }];
@@ -823,7 +834,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // 3. Residence Type Pie Chart
   const residenceData = [{
-    values: [87, 13],
+    values: [947, 135],
     labels: ['Urban', 'Rural'],
     type: 'pie',
     hole: 0.5,
@@ -837,6 +848,85 @@ document.addEventListener('DOMContentLoaded', function() {
     showlegend: false
   };
   Plotly.newPlot('plotly-residence', residenceData, residenceLayout, {responsive: true, displayModeBar: false});
+
+  // 4. Household Income Pie Chart
+  const incomeData = [{
+    values: [114, 815, 153],
+    labels: ['< 50k CNY', '50k–200k CNY', '> 200k CNY'],
+    type: 'pie',
+    hole: 0.5,
+    marker: { colors: ['#E8D5CB', '#2E7D5B', '#C68A17'] },
+    textinfo: 'label+percent'
+  }];
+  const incomeLayout = {
+    ...commonLayout,
+    margin: { t: 40, b: 10, l: 10, r: 10 },
+    title: { text: 'Household Income', font: { family: "'DM Serif Display', serif", size: 15 } },
+    showlegend: false
+  };
+  Plotly.newPlot('plotly-income', incomeData, incomeLayout, {responsive: true, displayModeBar: false});
+
+  // 5. Unplanned Pregnancy
+  const unplannedData = [{
+    values: [851, 231],
+    labels: ['Planned', 'Unplanned'],
+    type: 'pie',
+    hole: 0.5,
+    marker: { colors: ['#5E747F', '#B25830'] },
+    textinfo: 'label+percent'
+  }];
+  const unplannedLayout = {
+    ...commonLayout,
+    margin: { t: 40, b: 10, l: 10, r: 10 },
+    title: { text: 'Pregnancy Intent', font: { family: "'DM Serif Display', serif", size: 15 } },
+    showlegend: false
+  };
+  Plotly.newPlot('plotly-unplanned', unplannedData, unplannedLayout, {responsive: true, displayModeBar: false});
+
+  // 6. Number of Previous Children Bar Chart
+  const childrenData = [{
+    x: ['0 (First-time)', '1 Child', '2+ Children'],
+    y: [696, 368, 18],
+    type: 'bar',
+    marker: { color: '#C68A17' }
+  }];
+  const childrenLayout = {
+    ...commonLayout,
+    margin: { t: 40, b: 40, l: 40, r: 10 },
+    title: { text: 'Previous Children', font: { family: "'DM Serif Display', serif", size: 15 } },
+    yaxis: { title: 'Count' }
+  };
+  Plotly.newPlot('plotly-children', childrenData, childrenLayout, {responsive: true, displayModeBar: false});
+
+  // 7. Correlation Matrix Heatmap
+  const labels = ['ACE', 'SLE', 'FEPDS', 'FGAD7', 'SEPDS', 'SGAD7', 'TEPDS', 'TGAD7', 'FPEPDS', 'FPGAD7'];
+  const corrData = [{
+    z: [
+      [1.000000, 0.235899, 0.256973, 0.239065, 0.140574, 0.150847, 0.110151, 0.127862, 0.223009, 0.177856],
+      [0.235899, 1.000000, 0.290944, 0.291476, 0.225115, 0.239526, 0.194379, 0.180388, 0.255300, 0.222576],
+      [0.256973, 0.290944, 1.000000, 0.708857, 0.417031, 0.357954, 0.336882, 0.233535, 0.308689, 0.210553],
+      [0.239065, 0.291476, 0.708857, 1.000000, 0.365918, 0.487237, 0.331574, 0.400912, 0.314893, 0.296327],
+      [0.140574, 0.225115, 0.417031, 0.365918, 1.000000, 0.686486, 0.598989, 0.453263, 0.498196, 0.344723],
+      [0.150847, 0.239526, 0.357954, 0.487237, 0.686486, 1.000000, 0.525954, 0.602926, 0.456180, 0.455375],
+      [0.110151, 0.194379, 0.336882, 0.331574, 0.598989, 0.525954, 1.000000, 0.664930, 0.578787, 0.432207],
+      [0.127862, 0.180388, 0.233535, 0.400912, 0.453263, 0.602926, 0.664930, 1.000000, 0.482563, 0.546489],
+      [0.223009, 0.255300, 0.308689, 0.314893, 0.498196, 0.456180, 0.578787, 0.482563, 1.000000, 0.761854],
+      [0.177856, 0.222576, 0.210553, 0.296327, 0.344723, 0.455375, 0.432207, 0.546489, 0.761854, 1.000000]
+    ],
+    x: labels,
+    y: labels,
+    type: 'heatmap',
+    colorscale: 'Blues',
+    reversescale: true,
+    showscale: false
+  }];
+  const corrLayout = {
+    ...commonLayout,
+    margin: { t: 40, b: 80, l: 80, r: 20 },
+    title: { text: 'Risk Correlation Matrix', font: { family: "'DM Serif Display', serif", size: 15 } },
+    xaxis: { tickangle: 45 }
+  };
+  Plotly.newPlot('plotly-correlation', corrData, corrLayout, {responsive: true, displayModeBar: false});
 });
 </script>
 
