@@ -900,8 +900,13 @@ document.getElementById('predictionForm').addEventListener('submit', async funct
     resultsDiv.innerHTML = `
       <div class="result-card ${level}">
         <div class="result-icon">${c.icon}</div>
-        <div class="result-label">${c.label}</div>
-        <div class="result-title">F+S+T Risk Assessment Result</div>
+        <div class="result-label">
+          ${c.label} <span style="font-size:0.75rem; font-weight:400;">(Classification Output)</span>
+        </div>        
+        <div class="result-title">Model Output</div>
+        <div style="font-size:0.85rem; color:var(--ink-muted); margin-bottom:0.5rem;">
+          Classification (Risk Level) + Severity Prediction (EPDS Score)
+        </div>        
         <div class="result-prob">${pct}%</div>
         <div class="prob-bar-wrap">
           <div class="prob-bar-bg">
@@ -914,7 +919,24 @@ document.getElementById('predictionForm').addEventListener('submit', async funct
           </div>
         </div>
         ${severityHTML}
-        <p class="result-desc">${c.desc}</p>
+
+        <div class="severity-box" style="max-width:420px;">
+          <div class="sev-label">
+            <strong>Model Performance (Screening-Oriented)</strong>
+            Recall prioritised to avoid missing high-risk cases
+          </div>
+          <div class="sev-score" style="font-size:1rem; color:var(--ink);">
+            Recall: 0.84<br>
+            Precision: 0.36
+          </div>
+        </div>
+        
+        <p class="result-desc">
+          ${c.desc}
+          <br><br>
+          <strong>Interpretation:</strong> The model is designed to identify most high-risk individuals (high recall), 
+          even if it produces some false positives (lower precision). This is appropriate for early screening.
+        </p>
         <div class="result-disclaimer">
           <strong>Model:</strong> F+S+T Pipeline — trained on all three trimesters (N=691, 3.2% positive rate).
           Classification pipeline predicts high-risk status using the Youden-optimal threshold.
