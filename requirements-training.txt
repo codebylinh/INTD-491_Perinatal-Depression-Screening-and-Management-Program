@@ -1,6 +1,3 @@
-# Dependencies for model training (run locally or in Google Colab)
-# Install: pip install -r requirements-training.txt
-
 numpy==1.26.4
 pandas==2.2.1
 scikit-learn==1.4.2
