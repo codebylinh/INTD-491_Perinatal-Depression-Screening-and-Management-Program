@@ -1,8 +1,4 @@
-# Python dependencies for Postpartum Depression Risk Prediction API
-# Install locally: pip install -r requirements.txt
-# Vercel auto-installs these for Python serverless functions
-
-# No external dependencies needed — the prediction API uses only
-# Python standard library (json, math, http.server)
-# The trained sklearn model parameters are embedded directly in the code.
-flask
+scikit-learn==1.4.2
+joblib==1.4.0
+numpy==1.26.4
+pandas==2.2.1
