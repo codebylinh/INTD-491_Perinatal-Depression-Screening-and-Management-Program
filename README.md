@@ -195,6 +195,89 @@ Any future `git push` to the `main` branch will automatically redeploy.
 - **Same results**: The embedded parameters produce identical predictions to the original sklearn pipeline
 
 ---
+## How to run the Application
+
+This project consists of a **Python backend** for prediction and a **frontend interface** for user interaction. Follow the steps below to run the application locally.
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/codebylinh/INTD-491_Perinatal-Depression-Screening-and-Management-Program.git
+cd INTD-491_Perinatal-Depression-Screening-and-Management-Program
+```
+### 2. Set Up the Backend Environment
+
+Create and activate a virtual environment:
+```bash
+python -m venv venv
+```
+
+Windows
+```bash
+.\venv\Scripts\activate
+```
+Mac/Linux
+```bash
+source venv/bin/activate
+```
+Install required dependencies:
+```bash
+pip install -r requirements.txt
+```
+### 3. Start the Backend Server
+```bash
+python main.py
+```
+The server will run locally at:
+```bash
+http://localhost:5000
+```
+### 4. Launch the Frontend
+
+Open the interface located in the public folder:
+
+Option 1: Open public/index.html directly in your browser
+Option 2 (recommended): Run a local server
+```bash
+npx serve public
+```
+### 5. API Configuration
+
+Ensure the frontend is configured to send requests to the local backend:
+```bash
+http://localhost:5000
+```
+
+This enables real-time prediction based on user input.
+
+
+This project is compatible with Vercel serverless deployment:
+
+Backend: /api/index.py
+Frontend: /public/index.html
+
+Deploy using:
+
+vercel
+
+Ensure routing is configured correctly in vercel.json.
+
+Notes
+The system performs real-time risk prediction using a trained model.
+No user data is stored; all inputs are processed on a per-request basis.
+Troubleshooting
+Backend not responding
+Ensure main.py is running and accessible on port 5000
+
+Module errors
+Reinstall dependencies:
+```bash
+pip install -r requirements.txt
+```
+CORS or request issues
+Use a local server instead of opening the HTML file directly
+
+---
 
 ## Disclaimer
 
