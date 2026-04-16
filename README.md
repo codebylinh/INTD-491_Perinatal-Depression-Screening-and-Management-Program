@@ -257,12 +257,12 @@ Backend: /api/index.py
 Frontend: /public/index.html
 
 Deploy using:
-
+```bash
 vercel
-
+```
 Ensure routing is configured correctly in vercel.json.
 
-Notes
+### Notes
 The system performs real-time risk prediction using a trained model.
 No user data is stored; all inputs are processed on a per-request basis.
 Troubleshooting
