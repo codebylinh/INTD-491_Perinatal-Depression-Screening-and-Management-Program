@@ -251,7 +251,7 @@ Model files must remain inside the api/ folder
 If paths break, ensure you are running from inside /api
 
 ###🌐 Deployment (Vercel)
-This project is configured with vercel.json:
+> This project is configured with vercel.json:
 /api/* → Python backend
 /public/* → static frontend
 ---
