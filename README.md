@@ -198,85 +198,62 @@ Any future `git push` to the `main` branch will automatically redeploy.
 ## How to run the Application
 
 This project consists of a **Python backend** for prediction and a **frontend interface** for user interaction. Follow the steps below to run the application locally.
-
 ### 1. Clone the Repository
-
 ```bash
 git clone https://github.com/codebylinh/INTD-491_Perinatal-Depression-Screening-and-Management-Program.git
 cd INTD-491_Perinatal-Depression-Screening-and-Management-Program
 ```
-### 2. Set Up the Backend Environment
 
-Create and activate a virtual environment:
-```bash
-python -m venv venv
-```
-
-Windows
-```bash
-.\venv\Scripts\activate
-```
+### 2. Set Up Virtual Environment (Recommended)
 Mac/Linux
 ```bash
+python3 -m venv venv
 source venv/bin/activate
 ```
-Install required dependencies:
+Windows (PowerShell)
+```bash
+python -m venv venv
+.\venv\Scripts\Activate
+```
+
+### 3. Install Dependencies
 ```bash
 pip install -r requirements.txt
 ```
-### 3. Start the Backend Server
+
+### 4. Run the Prediction API
+Navigate to the API folder:
 ```bash
-python main.py
+cd api
 ```
-The server will run locally at:
+Run the model script:
 ```bash
-http://localhost:5000
+python predict.py
 ```
-### 4. Launch the Frontend
+> This loads the trained models:
+cls_pipe_FST.pkl (classification model)
+reg_pipe_FST.pkl (regression model)
 
-Open the interface located in the public folder:
+### 5. Open the Frontend
+Go to:
+public/index.html
+Open it in your browser (double click or use Live Server in VS Code).
 
-Option 1: Open public/index.html directly in your browser
-Option 2 (recommended): Run a local server
-```bash
-npx serve public
-```
-### 5. API Configuration
-
-Ensure the frontend is configured to send requests to the local backend:
-```bash
-http://localhost:5000
-```
-
-This enables real-time prediction based on user input.
-
-
-This project is compatible with Vercel serverless deployment:
-
-Backend: /api/index.py
-Frontend: /public/index.html
-
-Deploy using:
-```bash
-vercel
-```
-Ensure routing is configured correctly in vercel.json.
+### 6. Using the App
+Fill in the patient information form
+Submit the form
+The model returns a depression risk prediction
+Output is displayed in the interface
 
 ### Notes
-The system performs real-time risk prediction using a trained model.
-No user data is stored; all inputs are processed on a per-request basis.
-Troubleshooting
-Backend not responding
-Ensure main.py is running and accessible on port 5000
+Make sure the backend (predict.py) is running before using the frontend
+Model files must remain inside the api/ folder
+If paths break, ensure you are running from inside /api
 
-Module errors
-Reinstall dependencies:
-```bash
-pip install -r requirements.txt
-```
-CORS or request issues
-Use a local server instead of opening the HTML file directly
-
+###🌐 Deployment (Vercel)
+This project is configured with vercel.json:
+/api/* → Python backend
+/public/* → static frontend
 ---
 
 ## Disclaimer
