@@ -250,7 +250,7 @@ Make sure the backend (predict.py) is running before using the frontend
 Model files must remain inside the api/ folder
 If paths break, ensure you are running from inside /api
 
-###🌐 Deployment (Vercel)
+### 🌐 Deployment (Vercel)
 > This project is configured with vercel.json:
 /api/* → Python backend
 /public/* → static frontend
