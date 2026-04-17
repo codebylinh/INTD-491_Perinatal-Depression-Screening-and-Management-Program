@@ -2,14 +2,17 @@ from http.server import BaseHTTPRequestHandler
 import json
 import os
 import sys
+import joblib
 
 class handler(BaseHTTPRequestHandler):
 
     def do_GET(self):
+        BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+        
         info = {
             "python_version": sys.version,
-            "base_dir": os.path.dirname(os.path.abspath(__file__)),
-            "files_present": os.listdir(os.path.dirname(os.path.abspath(__file__))),
+            "base_dir": BASE_DIR,
+            "files_present": os.listdir(BASE_DIR),
         }
 
         # Try importing each package separately
@@ -20,16 +23,22 @@ class handler(BaseHTTPRequestHandler):
             except Exception as e:
                 info[pkg] = f"FAILED: {e}"
 
-        # Try loading models
-        BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-        import joblib
-    for fname in ["cls_pipe_FST.pkl", "reg_pipe_FST.pkl"]:
-    try:
-        path = os.path.join(BASE_DIR, fname)
-        model = joblib.load(path)
-        info[f"load_{fname}"] = "OK"
-    except Exception as e:
-        info[f"load_{fname}"] = f"FAILED: {type(e).__name__}: {e}"
+        # Try actually loading the models
+        for fname in ["cls_pipe_FST.pkl", "reg_pipe_FST.pkl"]:
+            try:
+                path = os.path.join(BASE_DIR, fname)
+                model = joblib.load(path)
+                info[f"load_{fname}"] = "OK"
+            except Exception as e:
+                info[f"load_{fname}"] = f"FAILED: {type(e).__name__}: {e}"
+
+        # Try loading model_config.json
+        try:
+            with open(os.path.join(BASE_DIR, "model_config.json")) as f:
+                config = json.load(f)
+            info["load_model_config.json"] = f"OK — threshold={config.get('threshold')}"
+        except Exception as e:
+            info["load_model_config.json"] = f"FAILED: {type(e).__name__}: {e}"
 
         self.send_response(200)
         self.send_header("Content-Type", "application/json")
