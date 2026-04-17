@@ -22,12 +22,14 @@ class handler(BaseHTTPRequestHandler):
 
         # Try loading models
         BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-        for fname in ["cls_pipe_FST.pkl", "reg_pipe_FST.pkl", "model_config.json"]:
-            try:
-                path = os.path.join(BASE_DIR, fname)
-                info[f"file_{fname}"] = "exists" if os.path.exists(path) else "MISSING"
-            except Exception as e:
-                info[f"file_{fname}"] = f"ERROR: {e}"
+        import joblib
+    for fname in ["cls_pipe_FST.pkl", "reg_pipe_FST.pkl"]:
+    try:
+        path = os.path.join(BASE_DIR, fname)
+        model = joblib.load(path)
+        info[f"load_{fname}"] = "OK"
+    except Exception as e:
+        info[f"load_{fname}"] = f"FAILED: {type(e).__name__}: {e}"
 
         self.send_response(200)
         self.send_header("Content-Type", "application/json")
