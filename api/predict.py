@@ -180,6 +180,7 @@ class handler(BaseHTTPRequestHandler):
             "status": "ok",
             "model": "F+S+T Pipeline",
             "threshold": THRESHOLD,
+            "load_error": _load_error,  
             "description": "Postpartum Depression Risk Prediction API",
             "model_metrics": MODEL_METRICS,
             "endpoints": {
