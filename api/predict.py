@@ -4,6 +4,8 @@ import os
 import sys
 import joblib
 
+
+import sklearn
 class handler(BaseHTTPRequestHandler):
 
     def do_GET(self):
@@ -14,6 +16,8 @@ class handler(BaseHTTPRequestHandler):
             "base_dir": BASE_DIR,
             "files_present": os.listdir(BASE_DIR),
         }
+        
+        info["sklearn_version_runtime"] = sklearn.__version__
 
         # Try importing each package separately
         for pkg in ["numpy", "pandas", "sklearn", "joblib"]:
