@@ -452,6 +452,89 @@
     border-top: 1px solid var(--border);
     margin: 1.5rem 0;
   }
+
+  /* Clinical Action Panel */
+  .clinical-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    margin-top: 1.25rem;
+    box-shadow: var(--shadow);
+  }
+  .clinical-panel h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.15rem;
+    margin-bottom: 0.25rem;
+  }
+  .clinical-panel .panel-sub {
+    font-size: 0.8rem;
+    color: var(--ink-muted);
+    margin-bottom: 1.25rem;
+    font-weight: 300;
+  }
+  .ca-tier {
+    display: flex;
+    gap: 0;
+    align-items: stretch;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 0.65rem;
+    transition: box-shadow 0.2s;
+  }
+  .ca-tier.active {
+    box-shadow: 0 0 0 2.5px var(--ca-color, #888);
+  }
+  .ca-score {
+    min-width: 72px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 14px 8px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-align: center;
+    line-height: 1.3;
+    gap: 2px;
+    flex-shrink: 0;
+  }
+  .ca-score .ca-range { font-size: 1.05rem; font-weight: 600; }
+  .ca-body { padding: 14px 16px; flex: 1; background: var(--surface); }
+  .ca-body-label { font-size: 0.85rem; font-weight: 600; margin-bottom: 3px; }
+  .ca-body-desc { font-size: 0.8rem; color: var(--ink-muted); line-height: 1.55; margin-bottom: 0.6rem; }
+  .ca-pills { display: flex; flex-wrap: wrap; gap: 5px; }
+  .ca-pill {
+    font-size: 0.72rem;
+    padding: 3px 9px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    color: var(--ink-muted);
+    background: var(--surface-raised);
+    line-height: 1.5;
+  }
+  /* tier colour themes */
+  .ca-t0 .ca-score { background: #EAF3DE; color: #27500A; }
+  .ca-t0 { --ca-color: #27500A; }
+  .ca-t1 .ca-score { background: #FAEEDA; color: #633806; }
+  .ca-t1 { --ca-color: #C68A17; }
+  .ca-t2 .ca-score { background: #FAECE7; color: #712B13; }
+  .ca-t2 { --ca-color: #B25830; }
+  .ca-t3 .ca-score { background: #FCEBEB; color: #791F1F; }
+  .ca-t3 { --ca-color: #B93A3A; }
+  .ca-t0 .ca-body-label { color: #27500A; }
+  .ca-t1 .ca-body-label { color: #633806; }
+  .ca-t2 .ca-body-label { color: #712B13; }
+  .ca-t3 .ca-body-label { color: #791F1F; }
+  .ca-footer {
+    font-size: 0.73rem;
+    color: var(--ink-faint);
+    margin-top: 0.85rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border);
+    line-height: 1.55;
+  }
 </style>
 </head>
 <body>
@@ -962,6 +1045,70 @@ document.getElementById('predictionForm').addEventListener('submit', async funct
         resultsDiv.querySelector('.prob-bar-fill').style.width = Math.min(prob * 100, 100) + '%';
       });
     });
+
+    // Clinical action panel
+    const tiers = [
+      {
+        range: '0 – 8', label: 'Within normal range', level: 'Minimal',
+        desc: 'No significant depressive symptoms detected. Routine perinatal care is appropriate.',
+        pills: ['Routine follow-up at 6-week postpartum visit', 'Provide psychoeducation on baby blues vs. PPD', 'Reassess if symptoms emerge'],
+        cls: 'ca-t0', min: 0, max: 8
+      },
+      {
+        range: '9 – 12', label: 'Sub-threshold — monitor closely', level: 'Mild',
+        desc: 'Elevated symptoms that do not meet clinical threshold. Enhanced monitoring recommended.',
+        pills: ['Schedule 2-week follow-up', 'Screen for sleep disruption & social support', 'Discuss lifestyle & self-care strategies', 'Consider peer support referral'],
+        cls: 'ca-t1', min: 9, max: 12
+      },
+      {
+        range: '13 – 19', label: 'Meets PPD threshold — clinical assessment required', level: 'Moderate',
+        desc: 'Score meets or exceeds the EPDS ≥ 13 high-risk threshold used in this model\'s classification pipeline.',
+        pills: ['Full diagnostic evaluation by clinician', 'Consider CBT or IPT referral', 'Assess medication suitability (breastfeeding-safe options)', 'Safety screen for self-harm ideation', 'Weekly check-ins'],
+        cls: 'ca-t2', min: 13, max: 19
+      },
+      {
+        range: '20 – 30', label: 'Urgent intervention — prioritise immediate care', level: 'Severe',
+        desc: 'Severe symptom load. Potential risk of postpartum psychosis or self-harm. Urgent same-day or next-day assessment is warranted.',
+        pills: ['Urgent psychiatric referral', 'Structured suicide & infanticide risk assessment', 'Involve partner / family support', 'Consider inpatient admission if risk is high', 'Medication initiation likely appropriate'],
+        cls: 'ca-t3', min: 20, max: 30
+      }
+    ];
+
+    const activeTier = tiers.findIndex(t => severity !== null && severity >= t.min && severity <= t.max);
+
+    const tiersHTML = tiers.map((t, i) => {
+      const isActive = i === activeTier;
+      const pillsHTML = t.pills.map(p => `<span class="ca-pill">${p}</span>`).join('');
+      const activeScore = (isActive && severity !== null)
+        ? `<span style="font-size:0.7rem;display:block;margin-top:3px;opacity:0.85;">predicted: ${severity.toFixed(1)}</span>`
+        : '';
+      return `
+        <div class="ca-tier ${t.cls}${isActive ? ' active' : ''}">
+          <div class="ca-score">
+            <span class="ca-range">${t.range}</span>
+            <span>${t.level}</span>
+            ${activeScore}
+          </div>
+          <div class="ca-body">
+            <div class="ca-body-label">${t.label}</div>
+            <div class="ca-body-desc">${t.desc}</div>
+            <div class="ca-pills">${pillsHTML}</div>
+          </div>
+        </div>`;
+    }).join('');
+
+    const panelHTML = `
+      <div class="clinical-panel">
+        <h3>Recommended Clinical Action</h3>
+        <p class="panel-sub">Based on predicted EPDS severity score from the regression pipeline${severity !== null ? ` — predicted score: <strong>${severity.toFixed(1)}</strong>` : ''}. Active tier is highlighted.</p>
+        ${tiersHTML}
+        <div class="ca-footer">
+          Thresholds follow EPDS scoring conventions (Cox et al., 1987). Clinical judgment should always supersede model output.
+          This guidance is intended as a decision-support aid for trained healthcare professionals, not as a substitute for clinical assessment.
+        </div>
+      </div>`;
+
+    resultsDiv.insertAdjacentHTML('beforeend', panelHTML);
 
     resultsDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
