@@ -9,19 +9,19 @@ import joblib
 import numpy as np
 import os
 import pandas as pd
-
-# ═══════════════════════════════════════════════════════════════
-# Load Models (F+S+T pipelines)
-# ═══════════════════════════════════════════════════════════════
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+_load_error = None
 
-cls_model = joblib.load(os.path.join(BASE_DIR, "cls_pipe_FST.pkl"))
-reg_model = joblib.load(os.path.join(BASE_DIR, "reg_pipe_FST.pkl"))
-
-with open(os.path.join(BASE_DIR, "model_config.json")) as f:
-    config = json.load(f)
-
-THRESHOLD = config["threshold"]
+try:
+    cls_model = joblib.load(os.path.join(BASE_DIR, "cls_pipe_FST.pkl"))
+    reg_model = joblib.load(os.path.join(BASE_DIR, "reg_pipe_FST.pkl"))
+    with open(os.path.join(BASE_DIR, "model_config.json")) as f:
+        config = json.load(f)
+    THRESHOLD = config["threshold"]
+except Exception as e:
+    _load_error = f"{type(e).__name__}: {e}"
+    cls_model = reg_model = config = None
+    THRESHOLD = None
 
 # ═══════════════════════════════════════════════════════════════
 # Model Performance Metrics (from F+S+T evaluation, slide 13/14)
