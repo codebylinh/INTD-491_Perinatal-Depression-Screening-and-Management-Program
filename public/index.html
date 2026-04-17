@@ -516,7 +516,7 @@
       <div id="plotly-correlation" style="width:100%; height:300px;"></div>
     </div>
 
-    <!-- Model Accuracy Comparison Chart (NEW) -->
+    <!-- Model Accuracy Comparison Chart -->
     <div id="plotly-model-comparison" style="width:100%; height:320px; margin-bottom: 1.5rem;"></div>
 
     <h3 style="font-size: 1rem; font-weight: 600; margin-top: 1rem; margin-bottom: 0.3rem; color: var(--ink);">Descriptive Analysis</h3>
@@ -693,9 +693,18 @@
           <label for="height">Height (cm)</label>
           <input type="number" id="height" step="0.1" min="130" max="200" placeholder="e.g. 162">
         </div>
+        <!-- Gestational weeks: one per trimester -->
         <div class="field">
           <label for="gestweek">Gestational Week (1st trim.)</label>
           <input type="number" id="gestweek" step="0.1" min="4" max="16" placeholder="e.g. 10">
+        </div>
+        <div class="field">
+          <label for="sgestweek">Gestational Week (2nd trim.)</label>
+          <input type="number" id="sgestweek" step="0.1" min="13" max="28" placeholder="e.g. 20">
+        </div>
+        <div class="field">
+          <label for="tgestweek">Gestational Week (3rd trim.)</label>
+          <input type="number" id="tgestweek" step="0.1" min="28" max="42" placeholder="e.g. 34">
         </div>
       </div>
 
@@ -844,6 +853,8 @@ document.getElementById('predictionForm').addEventListener('submit', async funct
     Pregnancy_Method: document.getElementById('method').value || null,
     Number_of_Previous_Children: parseFloat(document.getElementById('children').value) ?? null,
     F_Gestational_Week: parseFloat(document.getElementById('gestweek').value) || null,
+    S_Gestational_Week: parseFloat(document.getElementById('sgestweek').value) || null,
+    T_Gestational_Week: parseFloat(document.getElementById('tgestweek').value) || null,
     // 1st trimester
     FEPDS: parseFloat(document.getElementById('fepds').value) ?? null,
     FGAD7: parseFloat(document.getElementById('fgad7').value) ?? null,
@@ -1075,7 +1086,7 @@ document.addEventListener('DOMContentLoaded', function() {
     xaxis: { tickangle: 45 }
   }, { responsive: true, displayModeBar: false });
 
-  // 8. NEW: Model Comparison Chart (F vs F+S vs F+S+T)
+  // 8. Model Comparison Chart (F vs F+S vs F+S+T)
   Plotly.newPlot('plotly-model-comparison', [
     {
       name: 'Classification AUC-ROC',
